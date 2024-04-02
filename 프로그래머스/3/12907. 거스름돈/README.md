@@ -66,3 +66,6 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+### 참고 그림
+<img width="455" alt="스크린샷 2024-04-02 19 56 45" src="https://github.com/geniusYoo/Algorithm/assets/99001085/574c025d-7d86-4578-8617-6660465d23d6">
