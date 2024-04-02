@@ -32,3 +32,7 @@
 
  <p>한 줄에 배낭에 넣을 수 있는 물건들의 가치합의 최댓값을 출력한다.</p>
 
+### 참고 그림
+<img width="661" alt="스크린샷 2024-04-02 15 51 23" src="https://github.com/geniusYoo/Algorithm/assets/99001085/0e51307b-0d3c-48eb-a6de-41638447482c">
+
+
