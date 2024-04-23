@@ -1,46 +1,41 @@
+import org.w3c.dom.Node;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+
 
 class Main {
+    private static int N,M;
+    private static StringBuilder sb = new StringBuilder();
     private static boolean [] used;
-    private static int [] map;
-    public static int N, M;
-    public static StringBuilder sb;
-    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        
-        sb = new StringBuilder();
-        map = new int[N + 1];
-        used = new boolean[N + 1];
 
-        for (int i = 1; i <= N; i++) {
-            map[i] = i;
-        }
+        used = new boolean[N+1];
 
-        backtrack("", 0, 0);
-
-        System.out.println(sb.toString());
+        backtrack(0, "",1);
+        System.out.println(sb);
     }
-
-    public static void backtrack(String s, int cnt, int prev) {
+    private static void backtrack(int cnt, String s, int pre) {
         if (cnt == M) {
-            sb.append(s.trim());
-            sb.append("\n");
+            sb.append(s.trim() + "\n");
             return;
         }
+        for (int i = pre; i <= N; i++) {
+            if (!used[i]) {
+                used[i] = true;
+                int k = i;
+                backtrack(cnt+1, s + " " + i, k);
+                used[i] = false;
+            }
 
-        for (int i = 1 + prev; i <= N; i++) {
-            if (used[i]) continue;
-            used[i] = true;
-            backtrack(s + " " + i, cnt + 1, i);
-            used[i] = false;
         }
     }
 }
