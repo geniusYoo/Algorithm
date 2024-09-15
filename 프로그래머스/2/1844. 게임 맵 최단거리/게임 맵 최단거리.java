@@ -1,51 +1,48 @@
 import java.util.ArrayDeque;
+class Node {
+    int r,c;
+
+    public Node(int r, int c) {
+        this.r = r;
+        this.c = c;
+    }
+}
 
 class Solution {
-    public static int [] rx = {0, 0, 1, -1};
-    public static int [] ry = {1, -1, 0, 0};
-
-    private static class Node {
-        int r, c;
-
-        public Node(int r, int c) {
-            this.r = r;
-            this.c = c;
-        }
-    }
-
+    public static int[] rx = {0, 0, 1, -1};
+    public static int[] ry = {1, -1, 0, 0};
     public int solution(int[][] maps) {
-        int N = maps.length;
-        int M = maps[0].length;
+        int answer = 0;
 
-        ArrayDeque<Node> queue = new ArrayDeque<>();
-        boolean [][] visited = new boolean[N][M];
-        int [][] dist = new int [N][M];
-
-        queue.addLast(new Node(0,0));
+        boolean[][] visited = new boolean[maps.length][maps[0].length];
+        int[][] dist = new int[maps.length][maps[0].length];
+        
+        ArrayDeque<Node> deque = new ArrayDeque<>();
+        deque.addLast(new Node(0, 0));
         visited[0][0] = true;
         dist[0][0] = 1;
 
-        while(!queue.isEmpty()) {
-            Node now = queue.pollFirst(); // 현재 위치의 정점을 꺼낸다
+        while (!deque.isEmpty()) {
+            Node now = deque.pollFirst();
 
-            for (int i = 0; i < 4; i++) { // 상하좌우로 이동
+            for (int i = 0; i < 4; i++) {
                 int nr = now.r + rx[i];
                 int nc = now.c + ry[i];
 
-                if (nr < 0 || nc < 0 || nr >= N || nc >= M) // 맵 밖으로 벗어날 때
+                if (nr < 0 || nc < 0 || nr >= maps.length || nc >= maps[0].length)
                     continue;
-
-                if (maps[nr][nc] == 0) // 벽일 때
+                if (maps[nr][nc] == 0)
                     continue;
-
-                if (!visited[nr][nc]) { // 방문하지 않은 정점이라면, 큐에 넣고 방문 체크 후 최단거리 계산
+                
+                if (!visited[nr][nc]) {
                     visited[nr][nc] = true;
-                    queue.addLast(new Node(nr, nc));
+                    deque.addLast(new Node(nr, nc));
                     dist[nr][nc] = dist[now.r][now.c] + 1;
                 }
             }
         }
 
-        return dist[N-1][M-1] == 0 ? -1 : dist[N-1][M-1];
+
+        return dist[maps.length-1][maps[0].length-1] == 0 ? -1 : dist[maps.length-1][maps[0].length-1];
     }
 }
