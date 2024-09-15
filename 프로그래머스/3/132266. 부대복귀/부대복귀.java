@@ -1,25 +1,29 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 class Solution {
-    public int[] solution(int n, int[][] roads, int[] sources, int destination) {
+    public static void main(String[] args) {
+        int[] res = solution(3, new int[][]{{1,2},{2,3}}, new int[]{2,3},1);
+        for (Integer idx : res) {
+            System.out.println("idx = " + idx);
+        }
+    }
+    public static int[] solution(int n, int[][] roads, int[] sources, int destination) {
         int[] answer = new int[sources.length];
-        int[] dist = new int[n + 1];
+        int[] dist = new int[n+1];
         Arrays.fill(dist, -1);
 
-        ArrayList<Integer>[] adjList = new ArrayList[n + 1];
+        ArrayList<Integer>[] adjList = new ArrayList [n+1];
         ArrayDeque<Integer> deque = new ArrayDeque<>();
 
-        for (int i = 1; i < n + 1; i++) {
+        for (int i = 0; i <= n; i++) {
             adjList[i] = new ArrayList<>();
         }
 
-        // 인접 리스트 왕복
-        for (int[] arr : roads) {
-            adjList[arr[0]].add(arr[1]);
-            adjList[arr[1]].add(arr[0]);
+        for (int i = 0; i < roads.length; i++) {
+            adjList[roads[i][0]].add(roads[i][1]);
+            adjList[roads[i][1]].add(roads[i][0]);
         }
 
         dist[destination] = 0;
@@ -28,7 +32,7 @@ class Solution {
         while (!deque.isEmpty()) {
             int now = deque.pollFirst();
 
-            for (int next : adjList[now]) { // 인접리스트 순회
+            for (int next : adjList[now]) {
                 if (dist[next] == -1) {
                     dist[next] = dist[now] + 1;
                     deque.addLast(next);
