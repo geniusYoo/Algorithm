@@ -1,77 +1,58 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 class Node {
-    int x, y;
+    int r,c;
 
-    public Node(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Node(int r, int c) {
+        this.r = r;
+        this.c = c;
     }
 }
-
 class Main {
-    public static int [] rx = {-1, 1, 0, 0};
-    public static int [] ry = {0, 0, 1, -1};
-    public static int [][] map;
-    public static boolean [][] visited;
-    public static ArrayDeque<Node> deque;
-    public static int [][] dist;
-    public static int N, M, cnt;
-
+    public static int[] rx = {-1, 1, 0, 0};
+    public static int[] ry = {0, 0, -1, 1};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int[][] map = new int[N][M];
+        int[][] dist = new int[N][M];
+        boolean[][] visited = new boolean[N][M];
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        deque = new ArrayDeque<>();
-        visited = new boolean [N][M];
-        map = new int [N][M];
-        dist = new int [N][M];
-        cnt = 0;
         for (int i = 0; i < N; i++) {
-            char [] arr = br.readLine().toCharArray();
-            for (int j = 0; j < M; j++) {
+            char[] arr = br.readLine().toCharArray();
+            for (int j = 0; j < arr.length; j++) {
                 map[i][j] = arr[j] - '0';
             }
         }
 
-
-        bfs();
-
-    }
-
-    public static void bfs() {
+        ArrayDeque<Node> deque = new ArrayDeque<>();
         deque.addLast(new Node(0,0));
         visited[0][0] = true;
         dist[0][0] = 1;
+
         while (!deque.isEmpty()) {
             Node now = deque.pollFirst();
 
             for (int i = 0; i < 4; i++) {
-                int nr = now.x + rx[i];
-                int nc = now.y + ry[i];
+                int nr = now.r + rx[i];
+                int nc = now.c + ry[i];
 
-                // 맵 밖으로 벗어나는 경우
-                if (nr < 0 || nc < 0 || nr >= N || nc >= M) continue;
+                if (nr < 0 || nc < 0 || nr >= N || nc >= M ) continue;
 
                 if (map[nr][nc] == 0) continue;
 
-                if (!visited[nr][nc] && map[nr][nc] == 1) {
+                if (!visited[nr][nc]) {
                     visited[nr][nc] = true;
-                    deque.addLast(new Node(nr, nc));
-                    dist[nr][nc] = dist[now.x][now.y] + 1;
+                    deque.addLast(new Node(nr,nc));
+                    dist[nr][nc] = dist[now.r][now.c] + 1;
                 }
-
             }
         }
-        System.out.println(dist[N-1][M-1]);
+        System.out.println(dist[N -1][M -1]);
     }
 }
+
+
