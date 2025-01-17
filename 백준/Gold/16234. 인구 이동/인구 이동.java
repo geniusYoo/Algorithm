@@ -4,29 +4,26 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 class Node {
-    int r, c;
+    int r,c;
     public Node(int r, int c) {
         this.r = r;
         this.c = c;
     }
 }
-
 public class Main {
     static int[] rx = {-1, 1, 0, 0};
     static int[] ry = {0, 0, -1, 1};
     static int N, L, R, res;
     static int[][] map;
     static boolean[][] visited;
-
+    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         L = Integer.parseInt(st.nextToken());
         R = Integer.parseInt(st.nextToken());
-
         map = new int[N][N];
-
         // map 세팅
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -38,13 +35,10 @@ public class Main {
         while (true) {
             visited = new boolean[N][N];
             boolean moved = false;
-
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     if (!visited[i][j]) {
-                        if (bfs(i, j)) {
-                            moved = true;
-                        }
+                        if (bfs(new Node(i, j))) moved = true;
                     }
                 }
             }
@@ -56,19 +50,18 @@ public class Main {
             res++;
         }
     }
+    public static boolean bfs(Node start) {
+        ArrayDeque<Node> deque = new ArrayDeque<>();
+        ArrayList<Node> union = new ArrayList<>();
+        int cnt=0, sum=0;
+        deque.addLast(start);
+        visited[start.r][start.c] = true;
 
-    public static boolean bfs(int startR, int startC) {
-        Queue<Node> queue = new LinkedList<>();
-        List<Node> union = new ArrayList<>();
-        queue.add(new Node(startR, startC));
-        visited[startR][startC] = true;
-        int sum = 0, count = 0;
-
-        while (!queue.isEmpty()) {
-            Node now = queue.poll();
+        while (!deque.isEmpty()) {
+            Node now = deque.pollFirst();
             union.add(now);
             sum += map[now.r][now.c];
-            count++;
+            cnt++;
 
             for (int i = 0; i < 4; i++) {
                 int nr = now.r + rx[i];
@@ -81,18 +74,17 @@ public class Main {
 
                 if (diff >= L && diff <= R) {
                     visited[nr][nc] = true;
-                    queue.add(new Node(nr, nc));
+                    deque.addLast(new Node(nr, nc));
                 }
             }
         }
 
-        if (count == 1) return false; // 연합이 하나뿐이면 이동 없음
+        if (cnt == 1) return false;
 
-        int avg = sum / count;
+        int avg = sum / cnt;
         for (Node node : union) {
             map[node.r][node.c] = avg;
         }
-
-        return true; // 이동 발생
+        return true;
     }
-}
+ }
