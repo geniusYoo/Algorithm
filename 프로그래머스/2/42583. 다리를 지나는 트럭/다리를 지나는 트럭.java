@@ -18,7 +18,7 @@ class Solution {
         for (int t : truck_weights) waitQ.addLast(new Truck(t));
         
         int curWeight = 0;
-        int answer = 1;
+        int answer = 0;
         
         while (!waitQ.isEmpty() || !moveQ.isEmpty()) {
             answer++;
@@ -28,6 +28,7 @@ class Solution {
                 Truck curT = waitQ.pollFirst();
                 moveQ.addLast(curT);
                 curWeight += curT.weight;
+                continue;
             }
             
             // 한칸씩 이동시키기
