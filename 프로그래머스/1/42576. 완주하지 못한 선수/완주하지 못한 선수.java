@@ -1,23 +1,23 @@
-import java.util.HashMap;
+import java.util.*;
 
 class Solution {
     public String solution(String[] participant, String[] completion) {
-        HashMap<String, Integer> map = new HashMap<>();
+        HashMap<String, Integer> challengers = new HashMap<>();
+        for (String c : completion) challengers.put(c, challengers.getOrDefault(c, 0) + 1);
         for (String p : participant) {
-            int v = map.get(p) == null ? 0 : map.get(p);
-            v++;
-            map.put(p, v);
-        }
-        for (String c : completion) {
-            if (map.containsKey(c)) {
-                int v = map.get(c);
-                v--;
-                map.put(c, v);
+            if (!challengers.containsKey(p)) {
+                return p;
+            }
+            else {
+                challengers.put(p, challengers.get(p) - 1);
             }
         }
-        for (String key : map.keySet()) {
-            if (map.get(key) != 0) return key;
+        
+        for (String key : challengers.keySet()) {
+            if (challengers.get(key) < 0) return key;
         }
+        
+        
         return null;
     }
 }
