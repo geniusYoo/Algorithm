@@ -1,36 +1,24 @@
 import java.util.*;
+
 class Solution {
-    private static boolean[] visited;
-    private static ArrayList<Integer>[] adjList;
-    private static int res = 0;
+    boolean[] visited;
     public int solution(int n, int[][] computers) {
-        
+        int answer = 0;
         visited = new boolean[n];
-        adjList = new ArrayList[n];
-        for (int i=0; i<n; i++) adjList[i] = new ArrayList<>();
-        
         for (int i=0; i<n; i++) {
-            for (int k=0; k<n; k++) {
-                if (computers[i][k] == 1 && i != k) adjList[i].add(k);
+            if (!visited[i]) {
+                dfs(computers, i);
+                answer++;
             }
         }
-        
-        for (int i=0; i<n; i++) {
-            if(!visited[i]) {
-                dfs(i);
-                res++;
-            }
-            
-        }
-        return res;
+        return answer;
     }
-    private static void dfs(int now) {
-        visited[now] = true;
-        for (int next : adjList[now]) {
-            if (!visited[next]) {
-                dfs(next);
+    public void dfs(int[][] computers, int now) {
+        for (int i=0; i<computers[now].length; i++) {
+            if (!visited[i] && computers[now][i] == 1) {
+                visited[i] = true;
+                dfs(computers, i);
             }
         }
-    
     }
 }
